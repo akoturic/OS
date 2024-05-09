@@ -1,0 +1,13 @@
+class Main
+{
+    function void main()
+    {
+        do Output.printString("abcdef");
+        do Output.println();
+        do Output.printInt(1234);
+        do Output.println();
+        do Output.printString("pro");
+        do Output.printString("ba");
+        return;
+    }
+}

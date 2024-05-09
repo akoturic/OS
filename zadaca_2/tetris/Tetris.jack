@@ -1,0 +1,114 @@
+class Tetris {
+
+    field int x, y, rotation, block_size, SCREEN_WIDTH, SCREEN_HEIGHT;
+
+    constructor Tetris new(){
+
+		let x = 10;
+        let y = 10;
+        let rotation = 0;
+        let block_size = 10;
+
+        do redraw_L_shape();
+        do tetris();
+		return this;
+	}
+
+    method void tetris() {
+        var int key;
+        var boolean i;
+
+        let i = true;
+
+        while (i) {
+            let key = Keyboard.keyPressed();
+            if (key = 27) {
+                let i = false;
+            }
+            if (~(key=0)) {
+                do handleKey(key);
+            }
+            do Sys.wait(30); 
+        }
+
+        return;
+    }
+    method void handleKey(int key) {
+        do Screen.setColor(false);
+        do redraw_L_shape();
+        
+        if (key = 130) {
+            let x = x - 1;
+        } else {
+            if (key = 132) { 
+                let x = x + 1;
+            } else {
+                if (key = 131) { 
+                    let y = y - 1;
+                } else {
+                    if (key = 133) {  
+                        let y = y + 1;
+                    } else {
+                        if (key = 114 | key = 82) { 
+                            let rotation = (rotation + 90)  - (((rotation + 90) / 360) *360);
+                        }
+                    } 
+                } 
+            }  
+        }
+        
+
+        do Screen.setColor(true);
+        do redraw_L_shape();
+        return;
+    }
+
+    method void redraw_L_shape() {
+        var Array positions;
+        var int i, bx, by;
+
+        let positions = Array.new(8); 
+
+        if (rotation = 0) {
+           
+            let positions[0] = x; let positions[1] = y;
+            let positions[2] = x; let positions[3] = y + block_size;
+            let positions[4] = x; let positions[5] = y + (2 * block_size);
+            let positions[6] = x + block_size; let positions[7] = y + (2 * block_size);
+        }
+        if (rotation = 90) {
+            
+            let positions[0] = x + block_size; let positions[1] = y;
+            let positions[2] = x; let positions[3] = y;
+            let positions[4] = x - block_size; let positions[5] = y;
+            let positions[6] = x - block_size; let positions[7] = y + block_size;
+        }
+        if (rotation = 180) {
+           
+            let positions[0] = x; let positions[1] = y;
+            let positions[2] = x; let positions[3] = y - block_size;
+            let positions[4] = x; let positions[5] = y - (2 * block_size);
+            let positions[6] = x - block_size; let positions[7] = y - (2 * block_size);
+        }
+        if (rotation = 270) {
+            
+            let positions[0] = x - block_size; let positions[1] = y;
+            let positions[2] = x; let positions[3] = y;
+            let positions[4] = x + block_size; let positions[5] = y;
+            let positions[6] = x + block_size; let positions[7] = y - block_size;
+        }
+
+        
+        let i = 0;
+        while (i < 4) {
+            let bx = positions[2 * i]; 
+            let by = positions[2 * i + 1];
+
+            do Screen.drawRectangle(bx, by, bx + block_size, by + block_size);
+            
+            let i = i + 1;
+        }
+
+        return;
+    }
+}
